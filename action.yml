@@ -1,6 +1,9 @@
 name: 'Glitch Project Sync'
 author: 'Kanad Gupta'
-description: 'Update your Glitch project with the contents of your GitHub repository'
+branding:
+  color: blue
+  icon: refresh-cw
+description: 'Sync the contents of your GitHub repository with your project on Glitch'
 inputs:
   project-id:
     description: 'ID of your Glitch Project'
