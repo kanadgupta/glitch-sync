@@ -1,0 +1,16 @@
+name: 'Glitch Project Sync'
+author: 'Kanad Gupta'
+description: 'Update your Glitch project with the contents of your GitHub repository'
+inputs:
+  project-id:
+    description: 'ID of your Glitch Project'
+    required: true
+  auth-token:
+    description: 'Auth token for your Glitch Project'
+    required: true
+outputs:
+  response: # id of output
+    description: 'Response from Glitch API'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

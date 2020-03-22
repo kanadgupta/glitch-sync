@@ -1,0 +1,24 @@
+{
+  "name": "glitch-sync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "eslint index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kanadgupta/glitch-sync"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.2.3",
+    "@actions/github": "^2.1.1",
+    "@readme/eslint-config": "^1.16.0",
+    "bent": "^7.1.2",
+    "eslint": "^6.2.0",
+    "prettier": "^1.19.1"
+  }
+}
