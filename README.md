@@ -23,10 +23,12 @@ This action uses the [Glitch](https://glitch.com/) API to [export your GitHub re
 
 ## Example usage
 
+See `[.github/workflows/main.yml](https://github.com/kanadgupta/glitch-sync/blob/master/.github/workflows/main.yml)` for a full example.
+
 *I strongly recommend adding the inputs as encrypted secrets instead of passing them directly into your action file! [Here](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets) are the GitHub docs on how to do this.*
 
 ```
-uses: kanadgupta/glitch-sync
+uses: kanadgupta/glitch-sync@master
 with:
   project-id: '${{ secrets.projectId }}'
   auth-token: '${{ secrets.authToken }}'
