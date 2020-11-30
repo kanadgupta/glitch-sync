@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "14.15.1",
+    "npm": "6.14.8"
+  },
   "scripts": {
+    "build": "npx ncc build index.js",
     "test": "eslint index.js"
   },
   "repository": {
@@ -20,5 +25,8 @@
     "bent": "^7.1.2",
     "eslint": "^6.2.0",
     "prettier": "^1.19.1"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.25.1"
   }
 }
