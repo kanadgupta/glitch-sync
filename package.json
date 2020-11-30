@@ -19,7 +19,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@actions/core": "^1.2.3",
+    "@actions/core": "^1.2.6",
     "@actions/github": "^2.1.1",
     "@readme/eslint-config": "^1.16.0",
     "bent": "^7.1.2",
