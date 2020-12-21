@@ -24,10 +24,9 @@ async function run() {
     const authorization = core.getInput('auth-token');
     const path = core.getInput('path');
     if (!projectId || !authorization) {
-      core.setFailed(
+      return core.setFailed(
         'Oops! Project ID and Auth Token are required. See https://github.com/kanadgupta/glitch-sync#inputs for details.'
       );
-      return;
     }
     core.setSecret(projectId);
     core.setSecret(authorization);
@@ -38,10 +37,8 @@ async function run() {
     core.debug(`query string: ${repoQs}`);
     const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
     const post = bent(url, 'POST', { authorization });
-    const resp = await post();
-    core.debug('response object:');
-    core.debug(resp);
-    core.setOutput('response', resp.statusMessage);
+    await post();
+    return 'Glitch project successfully updated! 🎉';
   } catch (error) {
     core.debug(error);
     if (error.responseBody) {
@@ -50,7 +47,7 @@ async function run() {
       const details = await error.responseBody;
       core.debug(details.toString());
     }
-    core.setFailed(error.message);
+    return core.setFailed(error.message);
   }
 }
 
