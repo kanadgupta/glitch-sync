@@ -35,7 +35,9 @@ async function run() {
       core.debug('Raw error response from Glitch:');
       core.debug(details.toString());
     }
-    return core.setFailed(failureMessage);
+    core.info('failureMessage:');
+    core.info(failureMessage);
+    return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
   }
 }
 
