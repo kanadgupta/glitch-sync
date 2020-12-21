@@ -9,7 +9,7 @@ jobs:
     steps:
     - name: Check out repository
       uses: actions/checkout@v2
-    - name: Use local my-action
+    - name: Use local glitch-sync
       uses: ./../../glitch-sync/glitch-sync
       with:
         project-id: '${{ secrets.SANDBOX_PROJECTID }}'
