@@ -19,6 +19,10 @@ This action uses the [Glitch](https://glitch.com/) API to [export your GitHub re
 
 **Required** The `Authorization` request header used when clicking the **Import from GitHub** button (Tools > Import and Export > Import from GitHub) from within your Glitch project (see screenshot below). The only way that I know to obtain this is to look at your Network tab in your browser and capture the contents of the `Authorization` request header when the request to https://api.glitch.com/project/githubImport is made.
 
+### `path`
+
+**Optional** A relative path to a specific folder to import. If not passed, it will just import the entirety of the GitHub repository.
+
 <img src="https://user-images.githubusercontent.com/8854718/77256998-982c4900-6c3f-11ea-9b50-c2d27d37f8cd.png" width="200">
 
 ## Example usage
