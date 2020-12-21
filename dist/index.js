@@ -32,15 +32,15 @@ async function run() {
     const query = { projectId, repo: `${owner}/${repo}` };
     if (path) query.path = path;
     const repoQs = querystring.stringify(query);
-    core.info('Syncing repo to Glitch 📡');
     core.debug(`query string: ${repoQs}`);
     const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
+    core.info('Syncing repo to Glitch 📡');
     const post = bent(url, 'POST', { authorization });
     await post();
     return core.info('Glitch project successfully updated! 🎉');
   } catch (error) {
     let failureMessage = error.message;
-    core.debug(`Raw error object: ${error}`);
+    core.debug(`Raw error: ${error}`);
     if (error.responseBody) {
       // If error hitting Glitch API, send raw error response body to debug logs
       // Docs: https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs
