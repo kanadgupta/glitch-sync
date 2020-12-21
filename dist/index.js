@@ -34,11 +34,12 @@ async function run() {
     const query = { projectId, repo: `${owner}/${repo}` };
     if (path) query.path = path;
     const repoQs = querystring.stringify(query);
+    core.info('Syncing repo to Glitch 📡');
     core.debug(`query string: ${repoQs}`);
     const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
     const post = bent(url, 'POST', { authorization });
     await post();
-    return 'Glitch project successfully updated! 🎉';
+    return core.info('Glitch project successfully updated! 🎉');
   } catch (error) {
     core.debug(error);
     if (error.responseBody) {
