@@ -18,5 +18,5 @@ outputs:
   response: # id of output
     description: 'Response from Glitch API'
 runs:
-  using: 'node14'
+  using: 'node12'
   main: 'dist/index.js'
