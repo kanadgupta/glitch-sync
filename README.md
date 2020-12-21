@@ -31,11 +31,12 @@ See [`.github/workflows/main.yml`](https://github.com/kanadgupta/glitch-sync/blo
 
 *I strongly recommend adding the inputs as encrypted secrets instead of passing them directly into your action file! [Here](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets) are the GitHub docs on how to do this.*
 
-```
+```yml
 uses: kanadgupta/glitch-sync@master
 with:
   project-id: '${{ secrets.projectId }}'
   auth-token: '${{ secrets.authToken }}'
+  path: '${{ secrets.path }}' # optional
 ```
 
 ## Disclaimer
