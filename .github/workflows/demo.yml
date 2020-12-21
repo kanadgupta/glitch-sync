@@ -1,4 +1,4 @@
-name: Glitch Sync (Demo)
+name: Glitch Sync (Path Test)
 
 # Triggered when code is pushed to any branch in a repository
 on: [push]
