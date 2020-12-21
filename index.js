@@ -24,7 +24,7 @@ async function run() {
     const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
     const post = bent(url, 'POST', { authorization });
     const resp = await post();
-    core.debug(resp);
+    core.debug('resp:', resp);
     core.setOutput('response', resp.statusMessage);
   } catch (error) {
     core.debug(error);
