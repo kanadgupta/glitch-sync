@@ -7,7 +7,8 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    - uses: dist/index.js
+    - name: Sync to Glitch Project (demo)
+      uses: dist/index.js
       with:
         project-id: '${{ secrets.SANDBOX_PROJECTID }}'
         auth-token: '${{ secrets.SANDBOX_AUTHTOKEN }}'
