@@ -7,7 +7,10 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    - uses: dist/index.js
+    - name: Check out repository
+      uses: actions/checkout@v2
+    - name: Use local my-action
+      uses: dist/index.js
       with:
         project-id: '${{ secrets.SANDBOX_PROJECTID }}'
         auth-token: '${{ secrets.SANDBOX_AUTHTOKEN }}'
