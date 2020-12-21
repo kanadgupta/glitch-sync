@@ -30,8 +30,10 @@ async function run() {
       // If error hitting Glitch API, send raw error response body to debug logs
       // Docs: https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs
       const details = (await error.responseBody).toString();
-      failureMessage = JSON.parse(details).stderr;
       core.debug(`Raw error response from Glitch: ${details}`);
+      try {
+        failureMessage = JSON.parse(details).stderr;
+      } catch (e) {} // eslint-disable-line no-empty
     }
     return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
   }
