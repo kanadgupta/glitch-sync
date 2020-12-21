@@ -28,8 +28,6 @@ async function run() {
         'Oops! Project ID and Auth Token are required. See https://github.com/kanadgupta/glitch-sync#inputs for details.'
       );
     }
-    core.setSecret(projectId);
-    core.setSecret(authorization);
     const { owner, repo } = github.context.repo;
     const query = { projectId, repo: `${owner}/${repo}` };
     if (path) query.path = path;
