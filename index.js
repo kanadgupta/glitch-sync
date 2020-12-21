@@ -20,11 +20,12 @@ async function run() {
     const query = { projectId, repo: `${owner}/${repo}` };
     if (path) query.path = path;
     const repoQs = querystring.stringify(query);
-    core.debug('query string:', repoQs);
+    core.debug(`query string: ${repoQs}`);
     const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
     const post = bent(url, 'POST', { authorization });
     const resp = await post();
-    core.debug('resp:', resp);
+    core.debug('response object:');
+    core.debug(resp);
     core.setOutput('response', resp.statusMessage);
   } catch (error) {
     core.debug(error);
