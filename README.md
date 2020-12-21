@@ -36,7 +36,7 @@ uses: kanadgupta/glitch-sync@master
 with:
   project-id: '${{ secrets.projectId }}'
   auth-token: '${{ secrets.authToken }}'
-  path: '${{ secrets.path }}' # optional
+  path: 'dist' # optional
 ```
 
 ## Disclaimer
