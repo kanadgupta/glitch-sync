@@ -36,12 +36,14 @@ async function run() {
     const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
     const post = bent(url, 'POST', { authorization });
     const resp = await post();
-    if (resp.statusCode === 200) {
-      core.setOutput('response', resp.statusMessage);
-    } else {
-      core.setFailed(resp.statusMessage);
-    }
+    core.setOutput('response', resp.statusMessage);
   } catch (error) {
+    if (error.responseBody) {
+      // If error hitting Glitch API, send raw error response body to debug logs
+      // Docs: https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs
+      const details = await error.responseBody;
+      core.debug(details.toString());
+    }
     core.setFailed(error.message);
   }
 }
