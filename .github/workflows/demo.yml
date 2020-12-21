@@ -1,14 +1,13 @@
 name: Glitch Sync (Demo)
 
 # Triggered when code is pushed to any branch in a repository
-on: push
+on: [push]
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    - name: Sync to Glitch Project (demo)
-      uses: dist/index.js
+    - uses: dist/index.js
       with:
         project-id: '${{ secrets.SANDBOX_PROJECTID }}'
         auth-token: '${{ secrets.SANDBOX_AUTHTOKEN }}'
