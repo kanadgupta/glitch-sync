@@ -14,4 +14,4 @@ jobs:
       with:
         project-id: '${{ secrets.SANDBOX_PROJECTID }}'
         auth-token: '${{ secrets.SANDBOX_AUTHTOKEN }}'
-        path: 'demo' # sync demo folder
+        path: 'asdf' # sync demo folder
