@@ -21,12 +21,12 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^2.1.1",
-    "@readme/eslint-config": "^1.16.0",
-    "bent": "^7.1.2",
-    "eslint": "^6.2.0",
-    "prettier": "^1.19.1"
+    "bent": "^7.1.2"
   },
   "devDependencies": {
-    "@vercel/ncc": "^0.25.1"
+    "@readme/eslint-config": "^4.0.0",
+    "@vercel/ncc": "^0.25.1",
+    "eslint": "^7.16.0",
+    "prettier": "^2.2.1"
   }
 }
