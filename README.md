@@ -2,7 +2,7 @@
 
 [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/kanadgupta/glitch-sync)
 
-This action uses the [Glitch](https://glitch.com/) API to [export your GitHub repository to your Glitch project](https://glitch.com/help/import-git/).
+This action uses the [Glitch](https://glitch.com/) API to [export your GitHub repository to your Glitch project](https://glitch.happyfox.com/kb/article/20-can-i-import-code-from-a-github-repository/).
 
 ## Requirements
 
@@ -13,7 +13,7 @@ This action uses the [Glitch](https://glitch.com/) API to [export your GitHub re
 
 ### `project-id`
 
-**Required** The ID of your Glitch Project. You can easily obtain this by logging `process.env.PROJECT_ID` in your Glitch project. More info: https://glitch.com/help/project/
+**Required** The ID of your Glitch Project. You can easily obtain this by logging `process.env.PROJECT_ID` in your Glitch project. More info: https://glitch.happyfox.com/kb/article/30-what-environment-variables-are-available-in-a-project/
 
 ### `auth-token`
 
