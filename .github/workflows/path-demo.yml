@@ -1,6 +1,8 @@
 name: Glitch Sync (Path Demo)
 
-# Triggered when code is pushed to any branch in a repository
+# Glitch Project: https://glitch.com/edit/#!/github-action-sandbox
+# Resulting output: https://github-action-sandbox.glitch.me/
+
 on: [push]
 
 jobs:
