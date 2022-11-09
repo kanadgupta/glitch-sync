@@ -9,7 +9,10 @@
   },
   "scripts": {
     "build": "npx ncc build index.js",
-    "test": "eslint index.js"
+    "release": "npx conventional-changelog-cli -i CHANGELOG.md -s",
+    "test": "eslint index.js",
+    "version": "npm run build && npm run release && git add CHANGELOG.md dist/index.js"
+
   },
   "repository": {
     "type": "git",
