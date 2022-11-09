@@ -7,11 +7,11 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-    - name: Check out repository
-      uses: actions/checkout@v2
-    - name: Use local glitch-sync
-      uses: ./../../glitch-sync/glitch-sync
-      with:
-        project-id: '${{ secrets.SANDBOX_PROJECTID }}'
-        auth-token: '${{ secrets.SANDBOX_AUTHTOKEN }}'
-        path: 'demo' # sync demo folder
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Use local glitch-sync
+        uses: ./../../glitch-sync/glitch-sync
+        with:
+          project-id: '${{ secrets.SANDBOX_PROJECTID }}'
+          auth-token: '${{ secrets.SANDBOX_AUTHTOKEN }}'
+          path: 'demo' # sync demo folder
