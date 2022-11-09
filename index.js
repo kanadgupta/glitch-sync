@@ -1,7 +1,8 @@
-const bent = require('bent');
+const querystring = require('querystring');
+
 const core = require('@actions/core');
 const github = require('@actions/github');
-const querystring = require('querystring');
+const bent = require('bent');
 
 async function run() {
   try {

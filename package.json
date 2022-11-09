@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "14.15.1",
-    "npm": "^7"
+    "node": "^16",
+    "npm": "^8"
   },
   "scripts": {
     "build": "npx ncc build index.js",
@@ -24,10 +24,10 @@
     "bent": "^7.1.2"
   },
   "devDependencies": {
-    "@readme/eslint-config": "^4.0.0",
+    "@readme/eslint-config": "^10.1.3",
     "@vercel/ncc": "^0.25.1",
-    "eslint": "^7.16.0",
-    "prettier": "^2.2.1"
+    "eslint": "^8.27.0",
+    "prettier": "^2.7.1"
   },
   "prettier": "@readme/eslint-config/prettier"
 }
