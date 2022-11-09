@@ -10,6 +10,12 @@ npm version <version>
 
 This will automatically regenerate `CHANGELOG.md` and rebuild `dist/index.js` (see the next section), and create a commit with the changes.
 
+Don't forget to push the code **and** the tags:
+
+```sh
+git push && git push --tags
+```
+
 ## Rebuilding `dist/index.js`
 
 This project uses [`@vercel/ncc`](https://github.com/vercel/ncc) to compile the code and modules for usage in the GitHub Marketplace. [Here are GitHub's docs on the topic.](https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action#commit-tag-and-push-your-action-to-github)
