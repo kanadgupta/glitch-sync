@@ -11,15 +11,18 @@ This action uses the [Glitch](https://glitch.com/) API to [export your GitHub re
 
 ## Inputs
 
-### `project-id`
-
-**Required** The ID of your Glitch Project. You can obtain this by logging `process.env.PROJECT_ID` in your Glitch project. More info: https://glitch.happyfox.com/kb/article/30-variables/
-
 <img align="right" src="https://user-images.githubusercontent.com/8854718/77256998-982c4900-6c3f-11ea-9b50-c2d27d37f8cd.png" width="200">
 
 ### `auth-token`
 
 **Required** The `Authorization` request header used when clicking the **Import from GitHub** button (Tools > Import and Export > Import from GitHub) from within your Glitch project (see screenshot to the right). The only way that I know to obtain this is to look at your Network tab in your browser and capture the contents of the `Authorization` request header when the request to https://api.glitch.com/project/githubImport is made.
+
+### `project-id`
+
+**Required** The ID of your Glitch Project. You can obtain this via one of two ways:
+
+- Grabbing the value the `projectId` query parameter of the [aforementioned](#auth-token) request to https://api.glitch.com/project/githubImport
+- Logging `process.env.PROJECT_ID` in your Glitch project. More info: https://glitch.happyfox.com/kb/article/30-variables/
 
 ### `path`
 
