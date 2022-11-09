@@ -11,8 +11,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v2
-      - name: Use local glitch-sync
-        uses: ./../../glitch-sync/glitch-sync
+      - name: Sync using current glitch-sync code
+        uses: ./
         with:
           project-id: '${{ secrets.SANDBOX_PROJECTID }}'
           auth-token: '${{ secrets.SANDBOX_AUTHTOKEN }}'
