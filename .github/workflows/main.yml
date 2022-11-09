@@ -1,5 +1,6 @@
 name: Glitch Sync
 
+# Glitch Project: https://glitch.com/edit/#!/github-action
 on:
   push:
     branches:
