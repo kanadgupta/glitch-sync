@@ -32,7 +32,7 @@ This action uses the [Glitch](https://glitch.com/) API to [export your GitHub re
 
 See [`.github/workflows/main.yml`](https://github.com/kanadgupta/glitch-sync/blob/main/.github/workflows/main.yml) for a full example.
 
-_I strongly recommend adding the inputs as encrypted secrets instead of passing them directly into your action file! [Here](https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets#creating-encrypted-secrets) are the GitHub docs on how to do this._
+_I strongly recommend adding the inputs as encrypted secrets instead of passing them directly into your action file! [Here](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) are the GitHub docs on how to do this._
 
 ```yml
 uses: kanadgupta/glitch-sync@main
