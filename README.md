@@ -37,8 +37,8 @@ _I strongly recommend adding the inputs as encrypted secrets instead of passing 
 ```yml
 uses: kanadgupta/glitch-sync@main
 with:
-  project-id: '${{ secrets.projectId }}'
   auth-token: '${{ secrets.authToken }}'
+  project-id: '${{ secrets.projectId }}'
   path: 'dist' # optional
 ```
 
