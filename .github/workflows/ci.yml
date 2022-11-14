@@ -34,4 +34,4 @@ jobs:
         with:
           auth-token: '${{ secrets.SANDBOX_AUTHTOKEN }}'
           project-id: '${{ secrets.SANDBOX_PROJECTID }}'
-          path: '__tests__/path' # sync `__tests__/path` folder
+          path: 'test/e2e-path' # sync `test/e2e-path` folder
