@@ -1,3 +1,15 @@
+## 2.1.0 (2022-11-15)
+
+* feat: add `repo` param (#27) ([8b6f873](https://github.com/kanadgupta/glitch-sync/commit/8b6f873)), closes [#27](https://github.com/kanadgupta/glitch-sync/issues/27)
+* chore: rename test file ([e52c7c7](https://github.com/kanadgupta/glitch-sync/commit/e52c7c7))
+* chore: test suite (#26) ([4649a71](https://github.com/kanadgupta/glitch-sync/commit/4649a71)), closes [#26](https://github.com/kanadgupta/glitch-sync/issues/26)
+* chore: test suite + usage example cleanups (#24) ([dcfeb75](https://github.com/kanadgupta/glitch-sync/commit/dcfeb75)), closes [#24](https://github.com/kanadgupta/glitch-sync/issues/24)
+* chore: update deps, refactors (#25) ([2c5b83b](https://github.com/kanadgupta/glitch-sync/commit/2c5b83b)), closes [#25](https://github.com/kanadgupta/glitch-sync/issues/25)
+* docs: small link update ([d00e7d5](https://github.com/kanadgupta/glitch-sync/commit/d00e7d5))
+* docs: small note in CONTRIBUTING guidelines ([40a9671](https://github.com/kanadgupta/glitch-sync/commit/40a9671))
+
+
+
 ## 2.0.0 (2022-11-09)
 
 * Add better error messages ([6cbdf63](https://github.com/kanadgupta/glitch-sync/commit/6cbdf63))

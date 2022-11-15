@@ -3247,7 +3247,7 @@ async function run() {
     const authorization = core.getInput('auth-token', { required: true });
     const path = core.getInput('path');
     // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-    const repo = process.env.GITHUB_REPOSITORY;
+    const repo = core.getInput('repo') || process.env.GITHUB_REPOSITORY;
     const query = new URLSearchParams({ projectId, repo });
     if (path) query.set('path', path);
     const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
