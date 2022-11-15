@@ -14,9 +14,6 @@ inputs:
   path:
     description: 'Optional relative path to a specific folder to import'
     required: false
-outputs:
-  response: # id of output
-    description: 'Response from Glitch API'
 runs:
   using: 'node16'
   main: 'dist/index.js'
