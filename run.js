@@ -1,5 +1,3 @@
-const querystring = require('querystring');
-
 const core = require('@actions/core');
 const github = require('@actions/github');
 const bent = require('bent');
@@ -15,9 +13,9 @@ async function run() {
       );
     }
     const { owner, repo } = github.context.repo;
-    const query = { projectId, repo: `${owner}/${repo}` };
-    if (path) query.path = path;
-    const repoQs = querystring.stringify(query);
+    const query = new URLSearchParams({ projectId, repo: `${owner}/${repo}` });
+    if (path) query.set('path', path);
+    const repoQs = query.toString();
     core.debug(`query string: ${repoQs}`);
     const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
     core.info('Syncing repo to Glitch 📡');
