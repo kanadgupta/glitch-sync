@@ -23,7 +23,6 @@
   "license": "ISC",
   "dependencies": {
     "@actions/core": "^1.2.6",
-    "@actions/github": "^5.1.1",
     "bent": "^7.1.2"
   },
   "devDependencies": {

@@ -1,5 +1,4 @@
 const core = require('@actions/core');
-const github = require('@actions/github');
 const bent = require('bent');
 
 async function run() {
@@ -7,8 +6,9 @@ async function run() {
     const projectId = core.getInput('project-id', { required: true });
     const authorization = core.getInput('auth-token', { required: true });
     const path = core.getInput('path');
-    const { owner, repo } = github.context.repo;
-    const query = new URLSearchParams({ projectId, repo: `${owner}/${repo}` });
+    // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+    const repo = process.env.GITHUB_REPOSITORY;
+    const query = new URLSearchParams({ projectId, repo });
     if (path) query.set('path', path);
     const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
     core.debug(`full URL: ${url}`);
