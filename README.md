@@ -28,6 +28,10 @@ This action uses the [Glitch](https://glitch.com/) API to [export your GitHub re
 
 **Optional** A relative path to a specific folder to import. If not passed, it will just import the entirety of the GitHub repository.
 
+### `repo`
+
+**Optional** The GitHub repository to sync, using the format `owner/repo` (e.g., `octocat/Hello-World`). If not passed, the current GitHub repository will be synced.
+
 ## Example usage
 
 See [`.github/workflows/main.yml`](https://github.com/kanadgupta/glitch-sync/blob/main/.github/workflows/main.yml) for a full example.

@@ -14,6 +14,9 @@ inputs:
   path:
     description: 'Optional relative path to a specific folder to import'
     required: false
+  repo:
+    description: 'Optional GitHub repo if not using current repo (e.g., `octocat/Hello-World`)'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'
