@@ -118,4 +118,22 @@ describe('glitch-sync main runner tests', () => {
     expect(output).toContain('Glitch project successfully updated! 🎉');
     expect(scope.isDone()).toBe(true);
   });
+
+  it('should run with optional repo param', async () => {
+    process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
+    process.env.INPUT_PATH = 'test-path';
+    process.env['INPUT_PROJECT-ID'] = 'test-project-id';
+    process.env.INPUT_REPO = 'octocat/Hello-World';
+
+    const scope = nock('https://api.glitch.com', { encodedQueryParams: true })
+      .post('/project/githubImport')
+      .query({ path: 'test-path', projectId: 'test-project-id', repo: 'octocat/Hello-World' })
+      .reply(200);
+
+    await expect(run()).resolves.toBeUndefined();
+
+    const output = getCommandOutput();
+    expect(output).toContain('Glitch project successfully updated! 🎉');
+    expect(scope.isDone()).toBe(true);
+  });
 });
