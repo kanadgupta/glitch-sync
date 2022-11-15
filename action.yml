@@ -5,11 +5,11 @@ branding:
   icon: refresh-cw
 description: 'Sync the contents of your GitHub repository with your project on Glitch'
 inputs:
-  project-id:
-    description: 'ID of your Glitch Project'
-    required: true
   auth-token:
     description: 'Auth token for your Glitch Project'
+    required: true
+  project-id:
+    description: 'ID of your Glitch Project'
     required: true
   path:
     description: 'Optional relative path to a specific folder to import'
