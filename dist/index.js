@@ -10057,8 +10057,6 @@ function wrappy (fn, cb) {
 /***/ 1499:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
-const querystring = __nccwpck_require__(3477);
-
 const core = __nccwpck_require__(2186);
 const github = __nccwpck_require__(5438);
 const bent = __nccwpck_require__(3113);
@@ -10074,9 +10072,9 @@ async function run() {
       );
     }
     const { owner, repo } = github.context.repo;
-    const query = { projectId, repo: `${owner}/${repo}` };
-    if (path) query.path = path;
-    const repoQs = querystring.stringify(query);
+    const query = new URLSearchParams({ projectId, repo: `${owner}/${repo}` });
+    if (path) query.set('path', path);
+    const repoQs = query.toString();
     core.debug(`query string: ${repoQs}`);
     const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
     core.info('Syncing repo to Glitch 📡');
@@ -10189,14 +10187,6 @@ module.exports = require("path");
 
 "use strict";
 module.exports = require("punycode");
-
-/***/ }),
-
-/***/ 3477:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("querystring");
 
 /***/ }),
 
