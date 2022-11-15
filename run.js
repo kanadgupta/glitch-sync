@@ -3,17 +3,17 @@ const bent = require('bent');
 
 async function run() {
   try {
-    const projectId = core.getInput('project-id', { required: true });
-    const authorization = core.getInput('auth-token', { required: true });
+    const params = new URLSearchParams({
+      projectId: core.getInput('project-id', { required: true }),
+      // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+      repo: core.getInput('repo') || process.env.GITHUB_REPOSITORY,
+    });
     const path = core.getInput('path');
-    // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-    const repo = core.getInput('repo') || process.env.GITHUB_REPOSITORY;
-    const query = new URLSearchParams({ projectId, repo });
-    if (path) query.set('path', path);
-    const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
+    if (path) params.set('path', path);
+    const url = `https://api.glitch.com/project/githubImport?${params.toString()}`;
     core.debug(`full URL: ${url}`);
     core.info('Syncing repo to Glitch 📡');
-    const post = bent(url, 'POST', { authorization });
+    const post = bent(url, 'POST', { authorization: core.getInput('auth-token', { required: true }) });
     await post();
     return core.info('Glitch project successfully updated! 🎉');
   } catch (error) {
