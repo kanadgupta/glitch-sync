@@ -4,14 +4,9 @@ const bent = require('bent');
 
 async function run() {
   try {
-    const projectId = core.getInput('project-id');
-    const authorization = core.getInput('auth-token');
+    const projectId = core.getInput('project-id', { required: true });
+    const authorization = core.getInput('auth-token', { required: true });
     const path = core.getInput('path');
-    if (!projectId || !authorization) {
-      return core.setFailed(
-        'Oops! Project ID and Auth Token are required. See https://github.com/kanadgupta/glitch-sync#inputs for details.'
-      );
-    }
     const { owner, repo } = github.context.repo;
     const query = new URLSearchParams({ projectId, repo: `${owner}/${repo}` });
     if (path) query.set('path', path);
