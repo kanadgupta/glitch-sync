@@ -34,7 +34,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Oops! Project ID and Auth Token are required.');
+    expect(output).toContain('::error::Error syncing to Glitch: Input required and not supplied: project-id');
     // assertion that nock is not called
     expect(scope.isDone()).toBe(false);
   });
@@ -47,7 +47,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Oops! Project ID and Auth Token are required.');
+    expect(output).toContain('::error::Error syncing to Glitch: Input required and not supplied: auth-token');
     // assertion that nock is not called
     expect(scope.isDone()).toBe(false);
   });
