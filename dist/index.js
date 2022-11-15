@@ -13,47 +13,7 @@ module.exports = JSON.parse("{\"name\":\"@octokit/rest\",\"version\":\"16.43.2\"
 /***/ 2932:
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-const querystring = __webpack_require__(1191);
-
-const core = __webpack_require__(2186);
-const github = __webpack_require__(5438);
-const bent = __webpack_require__(3113);
-
-async function run() {
-  try {
-    const projectId = core.getInput('project-id');
-    const authorization = core.getInput('auth-token');
-    const path = core.getInput('path');
-    if (!projectId || !authorization) {
-      return core.setFailed(
-        'Oops! Project ID and Auth Token are required. See https://github.com/kanadgupta/glitch-sync#inputs for details.'
-      );
-    }
-    const { owner, repo } = github.context.repo;
-    const query = { projectId, repo: `${owner}/${repo}` };
-    if (path) query.path = path;
-    const repoQs = querystring.stringify(query);
-    core.debug(`query string: ${repoQs}`);
-    const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
-    core.info('Syncing repo to Glitch 📡');
-    const post = bent(url, 'POST', { authorization });
-    await post();
-    return core.info('Glitch project successfully updated! 🎉');
-  } catch (error) {
-    let failureMessage = error.message;
-    core.debug(`Raw error: ${error}`);
-    if (error.responseBody) {
-      // If error hitting Glitch API, send raw error response body to debug logs
-      // Docs: https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs
-      const details = (await error.responseBody).toString();
-      core.debug(`Raw error response from Glitch: ${details}`);
-      try {
-        failureMessage = JSON.parse(details).stderr;
-      } catch (e) {} // eslint-disable-line no-empty
-    }
-    return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
-  }
-}
+const run = __webpack_require__(1499);
 
 run();
 
@@ -29965,6 +29925,56 @@ function wrappy (fn, cb) {
     return ret
   }
 }
+
+
+/***/ }),
+
+/***/ 1499:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const querystring = __webpack_require__(1191);
+
+const core = __webpack_require__(2186);
+const github = __webpack_require__(5438);
+const bent = __webpack_require__(3113);
+
+async function run() {
+  try {
+    const projectId = core.getInput('project-id');
+    const authorization = core.getInput('auth-token');
+    const path = core.getInput('path');
+    if (!projectId || !authorization) {
+      return core.setFailed(
+        'Oops! Project ID and Auth Token are required. See https://github.com/kanadgupta/glitch-sync#inputs for details.'
+      );
+    }
+    const { owner, repo } = github.context.repo;
+    const query = { projectId, repo: `${owner}/${repo}` };
+    if (path) query.path = path;
+    const repoQs = querystring.stringify(query);
+    core.debug(`query string: ${repoQs}`);
+    const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
+    core.info('Syncing repo to Glitch 📡');
+    const post = bent(url, 'POST', { authorization });
+    await post();
+    return core.info('Glitch project successfully updated! 🎉');
+  } catch (error) {
+    let failureMessage = error.message;
+    core.debug(`Raw error: ${error}`);
+    if (error.responseBody) {
+      // If error hitting Glitch API, send raw error response body to debug logs
+      // Docs: https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs
+      const details = (await error.responseBody).toString();
+      core.debug(`Raw error response from Glitch: ${details}`);
+      try {
+        failureMessage = JSON.parse(details).stderr;
+      } catch (e) {} // eslint-disable-line no-empty
+    }
+    return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
+  }
+}
+
+module.exports = run;
 
 
 /***/ }),
