@@ -15,9 +15,8 @@ async function run() {
     const { owner, repo } = github.context.repo;
     const query = new URLSearchParams({ projectId, repo: `${owner}/${repo}` });
     if (path) query.set('path', path);
-    const repoQs = query.toString();
-    core.debug(`query string: ${repoQs}`);
-    const url = `https://api.glitch.com/project/githubImport?${repoQs}`;
+    const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
+    core.debug(`full URL: ${url}`);
     core.info('Syncing repo to Glitch 📡');
     const post = bent(url, 'POST', { authorization });
     await post();
