@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -24,11 +24,10 @@ jobs:
   # Testing the `path` parameter
   # Glitch Project: https://glitch.com/edit/#!/github-action-sandbox
   # Resulting output: https://github-action-sandbox.glitch.me/
-  e2e-path-test:
+  sync-with-path:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
       - name: Sync using current glitch-sync code
         uses: ./
         with:
