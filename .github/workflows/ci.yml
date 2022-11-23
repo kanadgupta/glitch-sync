@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     strategy:
@@ -11,9 +11,9 @@ jobs:
         node-version: [14, 16, 18]
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: npm install and test
@@ -24,11 +24,10 @@ jobs:
   # Testing the `path` parameter
   # Glitch Project: https://glitch.com/edit/#!/github-action-sandbox
   # Resulting output: https://github-action-sandbox.glitch.me/
-  e2e-path-test:
+  sync-with-path:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Sync using current glitch-sync code
         uses: ./
         with:
