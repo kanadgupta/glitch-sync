@@ -26,7 +26,7 @@ This action uses the [Glitch](https://glitch.com/) API to [export your GitHub re
 
 ### `path`
 
-**Optional** A relative path to a specific folder to import. If not passed, it will just import the entirety of the GitHub repository.
+**Optional** A relative path to a specific folder to import. If not passed, it will import the entirety of the GitHub repository.
 
 ### `repo`
 
@@ -48,4 +48,4 @@ with:
 
 ## Disclaimer
 
-I am not an employee of Glitch (just a user)! This repository is not endorsed by Glitch and does not use a documented public API endpoint (and the endpoint can be kind of flaky to be honest). The endpoint may change at anytime and break this workflow.
+I am not an employee of Glitch (merely a user)! This repository is not endorsed by Glitch and does not use a documented public API endpoint (and the endpoint can be kind of flaky to be honest). The endpoint may change at anytime and break this workflow.
