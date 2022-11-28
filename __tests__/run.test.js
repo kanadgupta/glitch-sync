@@ -65,7 +65,7 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
     expect(output).toContain('::error::Error syncing to Glitch: null');
-    expect(scope.isDone()).toBe(true);
+    scope.done();
   });
 
   // TODO: is this even a response body that the Glitch API returns?
@@ -83,7 +83,7 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
     expect(output).toContain('::error::Error syncing to Glitch: yikes');
-    expect(scope.isDone()).toBe(true);
+    scope.done();
   });
 
   it('should run with required parameters', async () => {
@@ -99,7 +99,7 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
     expect(output).toContain('Glitch project successfully updated! 🎉');
-    expect(scope.isDone()).toBe(true);
+    scope.done();
   });
 
   it('should run with optional path param', async () => {
@@ -116,7 +116,7 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
     expect(output).toContain('Glitch project successfully updated! 🎉');
-    expect(scope.isDone()).toBe(true);
+    scope.done();
   });
 
   it('should run with optional repo param', async () => {
@@ -134,6 +134,6 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
     expect(output).toContain('Glitch project successfully updated! 🎉');
-    expect(scope.isDone()).toBe(true);
+    scope.done();
   });
 });
