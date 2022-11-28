@@ -8,7 +8,7 @@
     "npm": "^8"
   },
   "scripts": {
-    "build": "npx ncc build index.js",
+    "build": "ncc build index.js",
     "release": "npx conventional-changelog-cli -i CHANGELOG.md -s",
     "pretest": "eslint . && prettier -c . && npx alex .",
     "test": "jest --coverage",
