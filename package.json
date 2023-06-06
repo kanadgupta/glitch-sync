@@ -1,8 +1,9 @@
 {
   "name": "glitch-sync",
   "version": "2.1.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Sync your GitHub repository with Glitch via GitHub Actions 🎏",
+  "private": true,
+  "main": "dist/index.js",
   "engines": {
     "node": "^16",
     "npm": "^8"
@@ -19,7 +20,7 @@
     "url": "https://github.com/kanadgupta/glitch-sync"
   },
   "keywords": [],
-  "author": "",
+  "author": "Kanad Gupta",
   "license": "ISC",
   "dependencies": {
     "@actions/core": "^1.2.6",
