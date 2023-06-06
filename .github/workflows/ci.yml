@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14, 16, 18]
+        node-version: [16, 18]
 
     steps:
       - uses: actions/checkout@v3
@@ -24,6 +24,19 @@ jobs:
         run: |
           npm ci
           npm test
+
+  # Minimal test of the GitHub Action
+  # (only runs on pushes to the `main` branch)
+  # Glitch Project: https://glitch.com/edit/#!/github-action
+  sync:
+    if: github.event.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync to Glitch Project
+        uses: kanadgupta/glitch-sync@main
+        with:
+          auth-token: '${{ secrets.authToken }}'
+          project-id: '${{ secrets.projectId }}'
 
   # Testing the `path` parameter
   # Glitch Project: https://glitch.com/edit/#!/github-action-sandbox
