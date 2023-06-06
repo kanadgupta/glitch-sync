@@ -1,6 +1,10 @@
 name: CI
 
-on: [push]
+on:
+  push:
+  schedule:
+    # Every sixth hour
+    - cron: '0 */6 * * *'
 
 jobs:
   test:
