@@ -29,7 +29,7 @@ jobs:
   # (only runs on pushes to the `main` branch)
   # Glitch Project: https://glitch.com/edit/#!/github-action
   sync:
-    if: github.event.ref == 'refs/heads/main'
+    if: github.event.ref == 'refs/heads/main' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     steps:
       - name: Sync to Glitch Project
