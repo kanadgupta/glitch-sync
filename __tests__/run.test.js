@@ -2,6 +2,11 @@ const nock = require('nock');
 
 const run = require('../run');
 
+const glitchNock = () =>
+  nock('https://api.glitch.com', { encodedQueryParams: true, reqheaders: { authorization: 'test-auth' } }).post(
+    '/project/githubImport'
+  );
+
 describe('glitch-sync main runner tests', () => {
   let mockStdOut;
 
@@ -29,7 +34,7 @@ describe('glitch-sync main runner tests', () => {
   it('should fail if missing project ID param', async () => {
     process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
 
-    const scope = nock('https://api.glitch.com').post('/project/githubImport').reply(200);
+    const scope = glitchNock().reply(200);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -42,7 +47,7 @@ describe('glitch-sync main runner tests', () => {
   it('should fail if missing auth param', async () => {
     process.env['INPUT_PROJECT-ID'] = 'test-project-id';
 
-    const scope = nock('https://api.glitch.com').post('/project/githubImport').reply(200);
+    const scope = glitchNock().reply(200);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -56,10 +61,7 @@ describe('glitch-sync main runner tests', () => {
     process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
     process.env['INPUT_PROJECT-ID'] = 'test-project-id';
 
-    const scope = nock('https://api.glitch.com', { encodedQueryParams: true })
-      .post('/project/githubImport')
-      .query({ projectId: 'test-project-id', repo: 'owner/repo' })
-      .reply(403);
+    const scope = glitchNock().query({ projectId: 'test-project-id', repo: 'owner/repo' }).reply(403);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -74,8 +76,7 @@ describe('glitch-sync main runner tests', () => {
     process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
     process.env['INPUT_PROJECT-ID'] = 'test-project-id';
 
-    const scope = nock('https://api.glitch.com', { encodedQueryParams: true })
-      .post('/project/githubImport')
+    const scope = glitchNock()
       .query({ projectId: 'test-project-id', repo: 'owner/repo' })
       .reply(400, { stderr: 'yikes' });
 
@@ -90,10 +91,7 @@ describe('glitch-sync main runner tests', () => {
     process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
     process.env['INPUT_PROJECT-ID'] = 'test-project-id';
 
-    const scope = nock('https://api.glitch.com', { encodedQueryParams: true })
-      .post('/project/githubImport')
-      .query({ projectId: 'test-project-id', repo: 'owner/repo' })
-      .reply(200);
+    const scope = glitchNock().query({ projectId: 'test-project-id', repo: 'owner/repo' }).reply(200);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -107,8 +105,7 @@ describe('glitch-sync main runner tests', () => {
     process.env.INPUT_PATH = 'test-path';
     process.env['INPUT_PROJECT-ID'] = 'test-project-id';
 
-    const scope = nock('https://api.glitch.com', { encodedQueryParams: true })
-      .post('/project/githubImport')
+    const scope = glitchNock()
       .query({ path: 'test-path', projectId: 'test-project-id', repo: 'owner/repo' })
       .reply(200);
 
@@ -125,8 +122,7 @@ describe('glitch-sync main runner tests', () => {
     process.env['INPUT_PROJECT-ID'] = 'test-project-id';
     process.env.INPUT_REPO = 'octocat/Hello-World';
 
-    const scope = nock('https://api.glitch.com', { encodedQueryParams: true })
-      .post('/project/githubImport')
+    const scope = glitchNock()
       .query({ path: 'test-path', projectId: 'test-project-id', repo: 'octocat/Hello-World' })
       .reply(200);
 
