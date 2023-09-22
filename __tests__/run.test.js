@@ -101,6 +101,23 @@ describe('glitch-sync main runner tests', () => {
     expect(output).toContain('::error::Error syncing to Glitch: Forbidden');
   });
 
+  it('should fail if Glitch API fails with non-JSON response', async () => {
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
+
+    server.use(
+      rest.post(glitchUrl, (req, res, ctx) => {
+        validateReq(req);
+        return res(ctx.status(403, '<html></html>'));
+      }),
+    );
+
+    await expect(run()).resolves.toBeUndefined();
+
+    const output = getCommandOutput();
+    expect(output).toContain('::error::Error syncing to Glitch: <html></html>');
+  });
+
   // TODO: is this even a response body that the Glitch API returns?
   // The error handling is a bit of a mess, that should be cleaned up at some point
   it('should fail if Glitch API fails with JSON response body', async () => {
