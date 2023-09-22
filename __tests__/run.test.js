@@ -1,7 +1,8 @@
-const { rest } = require('msw');
-const { setupServer } = require('msw/node');
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-const run = require('../run');
+import run from '../run';
 
 const glitchUrl = 'https://api.glitch.com/project/githubImport';
 
@@ -36,7 +37,7 @@ const server = setupServer(
   rest.post(glitchUrl, (req, res, ctx) => {
     validateReq(req);
     return res(ctx.status(200));
-  })
+  }),
 );
 
 describe('glitch-sync main runner tests', () => {
@@ -46,25 +47,19 @@ describe('glitch-sync main runner tests', () => {
     return [mockStdOut.mock.calls.join('\n\n')].filter(Boolean).join('\n\n');
   };
 
-  beforeEach(() => {
-    mockStdOut = jest.spyOn(process.stdout, 'write').mockImplementation();
+  beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' });
+  });
 
-    process.env.GITHUB_REPOSITORY = repo;
+  beforeEach(() => {
+    mockStdOut = vi.spyOn(process.stdout, 'write').mockImplementation(() => {});
+    vi.stubEnv('GITHUB_REPOSITORY', repo);
   });
 
   afterEach(() => {
-    delete process.env.GITHUB_REPOSITORY;
-    delete process.env['INPUT_AUTH-TOKEN'];
-    delete process.env['INPUT_PROJECT-ID'];
-    delete process.env.INPUT_PATH;
-
+    vi.unstubAllEnvs();
     mockStdOut.mockReset();
-
     server.resetHandlers();
-  });
-
-  beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' });
   });
 
   afterAll(() => {
@@ -72,7 +67,7 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should fail if missing project ID param', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = authorization;
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -81,7 +76,7 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should fail if missing auth param', async () => {
-    process.env['INPUT_PROJECT-ID'] = projectId;
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -90,14 +85,14 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should fail if Glitch API fails with empty response body', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = authorization;
-    process.env['INPUT_PROJECT-ID'] = projectId;
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
       rest.post(glitchUrl, (req, res, ctx) => {
         validateReq(req);
         return res(ctx.status(403));
-      })
+      }),
     );
 
     await expect(run()).resolves.toBeUndefined();
@@ -109,14 +104,14 @@ describe('glitch-sync main runner tests', () => {
   // TODO: is this even a response body that the Glitch API returns?
   // The error handling is a bit of a mess, that should be cleaned up at some point
   it('should fail if Glitch API fails with JSON response body', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = authorization;
-    process.env['INPUT_PROJECT-ID'] = projectId;
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
       rest.post(glitchUrl, (req, res, ctx) => {
         validateReq(req);
         return res(ctx.status(400), ctx.json({ stderr: 'yikes' }));
-      })
+      }),
     );
 
     await expect(run()).resolves.toBeUndefined();
@@ -126,8 +121,8 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should run with required parameters', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = authorization;
-    process.env['INPUT_PROJECT-ID'] = projectId;
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -136,15 +131,15 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should run with optional path param', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = authorization;
-    process.env.INPUT_PATH = path;
-    process.env['INPUT_PROJECT-ID'] = projectId;
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PATH', path);
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
       rest.post(glitchUrl, (req, res, ctx) => {
         validateReq(req, { path });
         return res(ctx.status(200));
-      })
+      }),
     );
 
     await expect(run()).resolves.toBeUndefined();
@@ -154,16 +149,16 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should run with optional repo param', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = authorization;
-    process.env.INPUT_PATH = path;
-    process.env['INPUT_PROJECT-ID'] = projectId;
-    process.env.INPUT_REPO = 'octocat/Hello-World';
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PATH', path);
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
+    vi.stubEnv('INPUT_REPO', 'octocat/Hello-World');
 
     server.use(
       rest.post(glitchUrl, (req, res, ctx) => {
         validateReq(req, { path, repo: 'octocat/Hello-World' });
         return res(ctx.status(200));
-      })
+      }),
     );
 
     await expect(run()).resolves.toBeUndefined();
