@@ -101,21 +101,23 @@ describe('glitch-sync main runner tests', () => {
     expect(output).toContain('::error::Error syncing to Glitch: Forbidden');
   });
 
-  it('should fail if Glitch API fails with non-JSON response', async () => {
+  it('should fail and display status text if Glitch API responds with non-JSON response', async () => {
     vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
       rest.post(glitchUrl, (req, res, ctx) => {
         validateReq(req);
-        return res(ctx.status(403, '<html></html>'));
+        return res(ctx.status(403), ctx.text('<html></html>'));
       }),
     );
 
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error syncing to Glitch: <html></html>');
+
+    expect(output).toContain('::debug::Raw error response from Glitch: <html></html>');
+    expect(output).toContain('::error::Error syncing to Glitch: Forbidden');
   });
 
   it('should fail if Glitch API fails with JSON response body', async () => {
