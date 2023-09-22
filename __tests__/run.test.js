@@ -118,23 +118,36 @@ describe('glitch-sync main runner tests', () => {
     expect(output).toContain('::error::Error syncing to Glitch: <html></html>');
   });
 
-  // TODO: is this even a response body that the Glitch API returns?
-  // The error handling is a bit of a mess, that should be cleaned up at some point
   it('should fail if Glitch API fails with JSON response body', async () => {
     vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PATH', 'non-existent-path');
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
       rest.post(glitchUrl, (req, res, ctx) => {
-        validateReq(req);
-        return res(ctx.status(400), ctx.json({ stderr: 'yikes' }));
+        validateReq(req, { path: 'non-existent-path' });
+        return res(
+          ctx.status(400),
+          // Note: this is an example response for when a bad `path` query parameter is sent
+          ctx.json({
+            cmd: "/opt/watcher/scripts/github-import.sh --repository='kanadgupta/glitch-sync' --sub-directory='non-existent-path' --token='redacted'",
+            code: 1,
+            killed: false,
+            signal: null,
+            stderr: "mv: cannot stat '/tmp/tmp.pDQPiXJ6CU/non-existent-path/*': No such file or directory\n",
+            stdout: 'Will checkout kanadgupta/glitch-sync at /tmp/tmp.pDQPiXJ6CU\n/app\n',
+            task: 'Import from GitHub',
+          }),
+        );
       }),
     );
 
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error syncing to Glitch: yikes');
+    expect(output).toContain(
+      "::error::Error syncing to Glitch: mv: cannot stat '/tmp/tmp.pDQPiXJ6CU/non-existent-path/*': No such file or directory",
+    );
   });
 
   it('should run with required parameters', async () => {
