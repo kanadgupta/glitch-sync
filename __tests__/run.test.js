@@ -2,8 +2,14 @@ const nock = require('nock');
 
 const run = require('../run');
 
+const authorization = 'test-auth';
+const projectId = 'test-project-id';
+const repo = 'owner/repo';
+// optional param
+const path = 'test-path';
+
 const glitchNock = () =>
-  nock('https://api.glitch.com', { encodedQueryParams: true, reqheaders: { authorization: 'test-auth' } }).post(
+  nock('https://api.glitch.com', { encodedQueryParams: true, reqheaders: { authorization } }).post(
     '/project/githubImport'
   );
 
@@ -17,7 +23,7 @@ describe('glitch-sync main runner tests', () => {
   beforeEach(() => {
     mockStdOut = jest.spyOn(process.stdout, 'write').mockImplementation();
 
-    process.env.GITHUB_REPOSITORY = 'owner/repo';
+    process.env.GITHUB_REPOSITORY = repo;
   });
 
   afterEach(() => {
@@ -32,7 +38,7 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should fail if missing project ID param', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
+    process.env['INPUT_AUTH-TOKEN'] = authorization;
 
     const scope = glitchNock().reply(200);
 
@@ -45,7 +51,7 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should fail if missing auth param', async () => {
-    process.env['INPUT_PROJECT-ID'] = 'test-project-id';
+    process.env['INPUT_PROJECT-ID'] = projectId;
 
     const scope = glitchNock().reply(200);
 
@@ -58,10 +64,10 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should fail if Glitch API fails with empty response body', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
-    process.env['INPUT_PROJECT-ID'] = 'test-project-id';
+    process.env['INPUT_AUTH-TOKEN'] = authorization;
+    process.env['INPUT_PROJECT-ID'] = projectId;
 
-    const scope = glitchNock().query({ projectId: 'test-project-id', repo: 'owner/repo' }).reply(403);
+    const scope = glitchNock().query({ projectId, repo }).reply(403);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -73,12 +79,10 @@ describe('glitch-sync main runner tests', () => {
   // TODO: is this even a response body that the Glitch API returns?
   // The error handling is a bit of a mess, that should be cleaned up at some point
   it('should fail if Glitch API fails with JSON response body', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
-    process.env['INPUT_PROJECT-ID'] = 'test-project-id';
+    process.env['INPUT_AUTH-TOKEN'] = authorization;
+    process.env['INPUT_PROJECT-ID'] = projectId;
 
-    const scope = glitchNock()
-      .query({ projectId: 'test-project-id', repo: 'owner/repo' })
-      .reply(400, { stderr: 'yikes' });
+    const scope = glitchNock().query({ projectId, repo }).reply(400, { stderr: 'yikes' });
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -88,10 +92,10 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should run with required parameters', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
-    process.env['INPUT_PROJECT-ID'] = 'test-project-id';
+    process.env['INPUT_AUTH-TOKEN'] = authorization;
+    process.env['INPUT_PROJECT-ID'] = projectId;
 
-    const scope = glitchNock().query({ projectId: 'test-project-id', repo: 'owner/repo' }).reply(200);
+    const scope = glitchNock().query({ projectId, repo }).reply(200);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -101,13 +105,11 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should run with optional path param', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
-    process.env.INPUT_PATH = 'test-path';
-    process.env['INPUT_PROJECT-ID'] = 'test-project-id';
+    process.env['INPUT_AUTH-TOKEN'] = authorization;
+    process.env.INPUT_PATH = path;
+    process.env['INPUT_PROJECT-ID'] = projectId;
 
-    const scope = glitchNock()
-      .query({ path: 'test-path', projectId: 'test-project-id', repo: 'owner/repo' })
-      .reply(200);
+    const scope = glitchNock().query({ path, projectId, repo }).reply(200);
 
     await expect(run()).resolves.toBeUndefined();
 
@@ -117,14 +119,12 @@ describe('glitch-sync main runner tests', () => {
   });
 
   it('should run with optional repo param', async () => {
-    process.env['INPUT_AUTH-TOKEN'] = 'test-auth';
-    process.env.INPUT_PATH = 'test-path';
-    process.env['INPUT_PROJECT-ID'] = 'test-project-id';
+    process.env['INPUT_AUTH-TOKEN'] = authorization;
+    process.env.INPUT_PATH = path;
+    process.env['INPUT_PROJECT-ID'] = projectId;
     process.env.INPUT_REPO = 'octocat/Hello-World';
 
-    const scope = glitchNock()
-      .query({ path: 'test-path', projectId: 'test-project-id', repo: 'octocat/Hello-World' })
-      .reply(200);
+    const scope = glitchNock().query({ path, projectId, repo: 'octocat/Hello-World' }).reply(200);
 
     await expect(run()).resolves.toBeUndefined();
 
