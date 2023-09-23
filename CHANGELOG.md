@@ -1,3 +1,33 @@
+## 3.0.0 (2023-09-23)
+
+* feat: convert to ES module (#64) ([5024334](https://github.com/kanadgupta/glitch-sync/commit/5024334)), closes [#64](https://github.com/kanadgupta/glitch-sync/issues/64)
+* feat: typescript (#63) ([f747ffb](https://github.com/kanadgupta/glitch-sync/commit/f747ffb)), closes [#63](https://github.com/kanadgupta/glitch-sync/issues/63)
+* feat(breaking): node 20 (#60) ([9da8231](https://github.com/kanadgupta/glitch-sync/commit/9da8231)), closes [#60](https://github.com/kanadgupta/glitch-sync/issues/60)
+* chore: bump a bunch of deps ([7ec8520](https://github.com/kanadgupta/glitch-sync/commit/7ec8520))
+* chore: bump deps (#36) ([aeae806](https://github.com/kanadgupta/glitch-sync/commit/aeae806)), closes [#36](https://github.com/kanadgupta/glitch-sync/issues/36)
+* chore: cleanup ([0974a77](https://github.com/kanadgupta/glitch-sync/commit/0974a77))
+* chore: consolidate workflows, drop node 14 tests (#55) ([cb40388](https://github.com/kanadgupta/glitch-sync/commit/cb40388)), closes [#55](https://github.com/kanadgupta/glitch-sync/issues/55)
+* chore: npm up ([27832f6](https://github.com/kanadgupta/glitch-sync/commit/27832f6))
+* chore: set up dependabot, bump GHA deps (#28) ([9d62f82](https://github.com/kanadgupta/glitch-sync/commit/9d62f82)), closes [#28](https://github.com/kanadgupta/glitch-sync/issues/28)
+* chore: small package.json updates ([b57dc61](https://github.com/kanadgupta/glitch-sync/commit/b57dc61))
+* chore: test suite upgrades (#58) ([29433fd](https://github.com/kanadgupta/glitch-sync/commit/29433fd)), closes [#58](https://github.com/kanadgupta/glitch-sync/issues/58)
+* chore: update dist (#59) ([b057c0e](https://github.com/kanadgupta/glitch-sync/commit/b057c0e)), closes [#59](https://github.com/kanadgupta/glitch-sync/issues/59)
+* chore(deps-dev): bump eslint + friends ([66a1596](https://github.com/kanadgupta/glitch-sync/commit/66a1596))
+* chore(deps-dev): bump the minor-development-deps group with 1 update (#61) ([b92c05f](https://github.com/kanadgupta/glitch-sync/commit/b92c05f)), closes [#61](https://github.com/kanadgupta/glitch-sync/issues/61) [#1102](https://github.com/kanadgupta/glitch-sync/issues/1102) [#1105](https://github.com/kanadgupta/glitch-sync/issues/1105) [#1102](https://github.com/kanadgupta/glitch-sync/issues/1102) [#1103](https://github.com/kanadgupta/glitch-sync/issues/1103) [#1031](https://github.com/kanadgupta/glitch-sync/issues/1031) [#1108](https://github.com/kanadgupta/glitch-sync/issues/1108) [#1105](https://github.com/kanadgupta/glitch-sync/issues/1105) [#1093](https://github.com/kanadgupta/glitch-sync/issues/1093) [#1089](https://github.com/kanadgupta/glitch-sync/issues/1089) [#1081](https://github.com/kanadgupta/glitch-sync/issues/1081) [#1071](https://github.com/kanadgupta/glitch-sync/issues/1071) [#1064](https://github.com/kanadgupta/glitch-sync/issues/1064)
+* chore(deps-dev): upgrading @readme/eslint-config + prettier ([ab5f3a0](https://github.com/kanadgupta/glitch-sync/commit/ab5f3a0))
+* chore(deps): bump (#42) ([ddd0c7e](https://github.com/kanadgupta/glitch-sync/commit/ddd0c7e)), closes [#42](https://github.com/kanadgupta/glitch-sync/issues/42)
+* chore(deps): bump @actions/core from 1.10.0 to 1.10.1 (#62) ([b9fc9fa](https://github.com/kanadgupta/glitch-sync/commit/b9fc9fa)), closes [#62](https://github.com/kanadgupta/glitch-sync/issues/62) [#1511](https://github.com/kanadgupta/glitch-sync/issues/1511)
+* chore(eslint): cleanup unnecessary rule overrides ([e438778](https://github.com/kanadgupta/glitch-sync/commit/e438778))
+* revert: don't run scheduled pings ([223bcc1](https://github.com/kanadgupta/glitch-sync/commit/223bcc1))
+* test: refactor, add auth header check ([4fa7ca4](https://github.com/kanadgupta/glitch-sync/commit/4fa7ca4))
+* test: smol refactor ([ce6bad1](https://github.com/kanadgupta/glitch-sync/commit/ce6bad1))
+* ci: fix expression for main run ([e4f715e](https://github.com/kanadgupta/glitch-sync/commit/e4f715e))
+* ci: run on cron ([670302c](https://github.com/kanadgupta/glitch-sync/commit/670302c))
+* ci: run prettier and alex on everything ([4a558e4](https://github.com/kanadgupta/glitch-sync/commit/4a558e4))
+* Create LICENSE ([35c11a6](https://github.com/kanadgupta/glitch-sync/commit/35c11a6))
+
+
+
 ## 2.1.0 (2022-11-15)
 
 * feat: add `repo` param (#27) ([8b6f873](https://github.com/kanadgupta/glitch-sync/commit/8b6f873)), closes [#27](https://github.com/kanadgupta/glitch-sync/issues/27)
