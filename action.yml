@@ -18,5 +18,5 @@ inputs:
     description: 'Optional GitHub repo if not using current repo (e.g., `octocat/Hello-World`)'
     required: false
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'

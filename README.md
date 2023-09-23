@@ -17,6 +17,9 @@ This action uses the [Glitch](https://glitch.com/) API to [export your GitHub re
 
 **Required** The `Authorization` request header used when clicking the **Import from GitHub** button (Tools > Import and Export > Import from GitHub) from within your Glitch project (see screenshot to the right). The only way that I know to obtain this is to look at your Network tab in your browser and capture the contents of the `Authorization` request header when the `POST` request to https://api.glitch.com/project/githubImport is made.
 
+> [!IMPORTANT]
+> Glitch rotates this token regularly so you'll need to ensure it stays updated in order for this tool to work properly. In my testing, the token rotates roughly once a month.
+
 ### `project-id`
 
 **Required** The ID of your Glitch Project. You can obtain this via one of two ways:

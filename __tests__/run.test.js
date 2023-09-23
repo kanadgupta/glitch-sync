@@ -72,7 +72,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error syncing to Glitch: Input required and not supplied: project-id');
+    expect(output).toContain('::error::Error running workflow: Input required and not supplied: project-id');
   });
 
   it('should fail if missing auth param', async () => {
@@ -81,7 +81,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error syncing to Glitch: Input required and not supplied: auth-token');
+    expect(output).toContain('::error::Error running workflow: Input required and not supplied: auth-token');
   });
 
   it('should fail if Glitch API fails with empty response body', async () => {
@@ -101,23 +101,74 @@ describe('glitch-sync main runner tests', () => {
     expect(output).toContain('::error::Error syncing to Glitch: Forbidden');
   });
 
-  // TODO: is this even a response body that the Glitch API returns?
-  // The error handling is a bit of a mess, that should be cleaned up at some point
-  it('should fail if Glitch API fails with JSON response body', async () => {
+  it('should fail and display status text if Glitch API responds with non-JSON response', async () => {
     vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
       rest.post(glitchUrl, (req, res, ctx) => {
         validateReq(req);
-        return res(ctx.status(400), ctx.json({ stderr: 'yikes' }));
+        return res(ctx.status(403), ctx.text('<html></html>'));
       }),
     );
 
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error syncing to Glitch: yikes');
+
+    expect(output).toContain('::debug::Raw 403 error response from Glitch: <html></html>');
+    expect(output).toContain('::error::Error syncing to Glitch: Forbidden');
+  });
+
+  it('should fail and display status text if Glitch API responds with non-JSON response and custom status text', async () => {
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
+
+    server.use(
+      rest.post(glitchUrl, (req, res, ctx) => {
+        validateReq(req);
+        return res(ctx.status(403, 'custom status text'), ctx.text('<html></html>'));
+      }),
+    );
+
+    await expect(run()).resolves.toBeUndefined();
+
+    const output = getCommandOutput();
+
+    expect(output).toContain('::debug::Raw 403 error response from Glitch: <html></html>');
+    expect(output).toContain('::error::Error syncing to Glitch: custom status text');
+  });
+
+  it('should fail if Glitch API fails with JSON response body', async () => {
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PATH', 'non-existent-path');
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
+
+    server.use(
+      rest.post(glitchUrl, (req, res, ctx) => {
+        validateReq(req, { path: 'non-existent-path' });
+        return res(
+          ctx.status(400),
+          // Note: this is an example response for when a bad `path` query parameter is sent
+          ctx.json({
+            cmd: "/opt/watcher/scripts/github-import.sh --repository='kanadgupta/glitch-sync' --sub-directory='non-existent-path' --token='redacted'",
+            code: 1,
+            killed: false,
+            signal: null,
+            stderr: "mv: cannot stat '/tmp/tmp.pDQPiXJ6CU/non-existent-path/*': No such file or directory\n",
+            stdout: 'Will checkout kanadgupta/glitch-sync at /tmp/tmp.pDQPiXJ6CU\n/app\n',
+            task: 'Import from GitHub',
+          }),
+        );
+      }),
+    );
+
+    await expect(run()).resolves.toBeUndefined();
+
+    const output = getCommandOutput();
+    expect(output).toContain(
+      "::error::Error syncing to Glitch: mv: cannot stat '/tmp/tmp.pDQPiXJ6CU/non-existent-path/*': No such file or directory",
+    );
   });
 
   it('should run with required parameters', async () => {

@@ -6,20 +6,12 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [16, 18, 20]
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install and test
-        run: |
-          npm ci
-          npm test
+          node-version-file: package.json
+      - run: npm cit
 
   # Minimal test of the GitHub Action
   # (only runs on pushes to the `main` branch)
@@ -31,8 +23,8 @@ jobs:
       - name: Sync to Glitch Project
         uses: kanadgupta/glitch-sync@main
         with:
-          auth-token: '${{ secrets.authToken }}'
-          project-id: '${{ secrets.projectId }}'
+          auth-token: '${{ secrets.AUTHTOKEN }}'
+          project-id: '${{ secrets.PROJECTID }}'
 
   # Testing the `path` parameter
   # Glitch Project: https://glitch.com/edit/#!/github-action-sandbox
@@ -40,7 +32,7 @@ jobs:
   sync-with-path:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Sync using current glitch-sync code
         uses: ./
         with:
