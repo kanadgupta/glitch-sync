@@ -2723,18 +2723,38 @@ const run_1 = __importDefault(__nccwpck_require__(692));
 
 "use strict";
 
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core_1 = __importDefault(__nccwpck_require__(186));
+const core = __importStar(__nccwpck_require__(186));
 async function run() {
     try {
-        const projectId = core_1.default.getInput('project-id', { required: true });
-        const authorization = core_1.default.getInput('auth-token', { required: true });
-        const path = core_1.default.getInput('path');
+        const projectId = core.getInput('project-id', { required: true });
+        const authorization = core.getInput('auth-token', { required: true });
+        const path = core.getInput('path');
         // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-        const repo = core_1.default.getInput('repo') || process.env.GITHUB_REPOSITORY;
+        const repo = core.getInput('repo') || process.env.GITHUB_REPOSITORY;
         if (!repo) {
             throw new Error('Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action?');
         }
@@ -2742,25 +2762,25 @@ async function run() {
         if (path)
             query.set('path', path);
         const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
-        core_1.default.debug(`full URL: ${url}`);
-        core_1.default.info('Syncing repo to Glitch 📡');
+        core.debug(`full URL: ${url}`);
+        core.info('Syncing repo to Glitch 📡');
         const res = await fetch(url, { method: 'POST', headers: { authorization } });
         if (res.ok)
-            return core_1.default.info('Glitch project successfully updated! 🎉');
+            return core.info('Glitch project successfully updated! 🎉');
         // handle error response from Glitch API
         let failureMessage = res.statusText;
         const text = await res.text();
-        core_1.default.debug(`Raw ${res.status} error response from Glitch: ${text}`);
+        core.debug(`Raw ${res.status} error response from Glitch: ${text}`);
         try {
             // Occasionally Glitch will respond with JSON that contains a semi-helpful error
             failureMessage = JSON.parse(text).stderr;
         }
         catch (e) { } // eslint-disable-line no-empty
-        return core_1.default.setFailed(`Error syncing to Glitch: ${failureMessage}`);
+        return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
     }
     catch (error) {
-        core_1.default.debug(`Raw error: ${error}`);
-        return core_1.default.setFailed(`Error running workflow: ${error.message}`);
+        core.debug(`Raw error: ${error}`);
+        return core.setFailed(`Error running workflow: ${error.message}`);
     }
 }
 exports["default"] = run;
