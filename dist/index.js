@@ -2703,43 +2703,67 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 499:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ 177:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
-const core = __nccwpck_require__(186);
+"use strict";
 
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const run_1 = __importDefault(__nccwpck_require__(692));
+(0, run_1.default)();
+
+
+/***/ }),
+
+/***/ 692:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const core_1 = __importDefault(__nccwpck_require__(186));
 async function run() {
-  try {
-    const projectId = core.getInput('project-id', { required: true });
-    const authorization = core.getInput('auth-token', { required: true });
-    const path = core.getInput('path');
-    // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
-    const repo = core.getInput('repo') || process.env.GITHUB_REPOSITORY;
-    const query = new URLSearchParams({ projectId, repo });
-    if (path) query.set('path', path);
-    const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
-    core.debug(`full URL: ${url}`);
-    core.info('Syncing repo to Glitch 📡');
-    const res = await fetch(url, { method: 'POST', headers: { authorization } });
-    if (res.ok) return core.info('Glitch project successfully updated! 🎉');
-
-    // handle error response from Glitch API
-    let failureMessage = res.statusText;
-    const text = await res.text();
-    core.debug(`Raw ${res.status} error response from Glitch: ${text}`);
     try {
-      // Occasionally Glitch will respond with JSON that contains a semi-helpful error
-      failureMessage = JSON.parse(text).stderr;
-    } catch (e) {} // eslint-disable-line no-empty
-
-    return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
-  } catch (error) {
-    core.debug(`Raw error: ${error}`);
-    return core.setFailed(`Error running workflow: ${error.message}`);
-  }
+        const projectId = core_1.default.getInput('project-id', { required: true });
+        const authorization = core_1.default.getInput('auth-token', { required: true });
+        const path = core_1.default.getInput('path');
+        // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
+        const repo = core_1.default.getInput('repo') || process.env.GITHUB_REPOSITORY;
+        if (!repo) {
+            throw new Error('Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action?');
+        }
+        const query = new URLSearchParams({ projectId, repo });
+        if (path)
+            query.set('path', path);
+        const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
+        core_1.default.debug(`full URL: ${url}`);
+        core_1.default.info('Syncing repo to Glitch 📡');
+        const res = await fetch(url, { method: 'POST', headers: { authorization } });
+        if (res.ok)
+            return core_1.default.info('Glitch project successfully updated! 🎉');
+        // handle error response from Glitch API
+        let failureMessage = res.statusText;
+        const text = await res.text();
+        core_1.default.debug(`Raw ${res.status} error response from Glitch: ${text}`);
+        try {
+            // Occasionally Glitch will respond with JSON that contains a semi-helpful error
+            failureMessage = JSON.parse(text).stderr;
+        }
+        catch (e) { } // eslint-disable-line no-empty
+        return core_1.default.setFailed(`Error syncing to Glitch: ${failureMessage}`);
+    }
+    catch (error) {
+        core_1.default.debug(`Raw error: ${error}`);
+        return core_1.default.setFailed(`Error running workflow: ${error.message}`);
+    }
 }
-
-module.exports = run;
+exports["default"] = run;
 
 
 /***/ }),
@@ -2870,15 +2894,12 @@ module.exports = require("util");
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-const run = __nccwpck_require__(499);
-
-run();
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require__(177);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
