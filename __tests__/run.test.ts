@@ -1,3 +1,6 @@
+import type { DefaultBodyType, PathParams, RestRequest } from 'msw';
+import type { SpyInstance } from 'vitest';
+
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -13,7 +16,10 @@ const repo = 'owner/repo';
 const path = 'test-path';
 
 /** Validates the query and header params of the Glitch API request */
-function validateReq(req, opts = {}) {
+function validateReq(
+  req: RestRequest<DefaultBodyType, PathParams<string>>,
+  opts: { path?: string; repo?: string } = {},
+) {
   if (req.headers.get('authorization') !== authorization) {
     throw new Error(`Mock error: expected ${authorization}, received ${req.headers.get('authorization')}`);
   }
@@ -41,7 +47,7 @@ const server = setupServer(
 );
 
 describe('glitch-sync main runner tests', () => {
-  let mockStdOut;
+  let mockStdOut: SpyInstance;
 
   const getCommandOutput = () => {
     return [mockStdOut.mock.calls.join('\n\n')].filter(Boolean).join('\n\n');
@@ -52,7 +58,7 @@ describe('glitch-sync main runner tests', () => {
   });
 
   beforeEach(() => {
-    mockStdOut = vi.spyOn(process.stdout, 'write').mockImplementation(() => {});
+    mockStdOut = vi.spyOn(process.stdout, 'write').mockImplementation(() => true);
     vi.stubEnv('GITHUB_REPOSITORY', repo);
   });
 
@@ -82,6 +88,19 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
     expect(output).toContain('::error::Error running workflow: Input required and not supplied: auth-token');
+  });
+
+  it('should fail if github env variables are missing', async () => {
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
+    vi.stubEnv('GITHUB_REPOSITORY', '');
+
+    await expect(run()).resolves.toBeUndefined();
+
+    const output = getCommandOutput();
+    expect(output).toContain(
+      '::error::Error running workflow: Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action?',
+    );
   });
 
   it('should fail if Glitch API fails with empty response body', async () => {

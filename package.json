@@ -8,9 +8,9 @@
     "node": "^20"
   },
   "scripts": {
-    "build": "ncc build index.js",
+    "build": "ncc build index.ts",
     "release": "npx conventional-changelog-cli -i CHANGELOG.md -s",
-    "pretest": "eslint . && prettier -c . && npx alex .",
+    "pretest": "tsc && eslint . --ext ts,js && prettier -c . && npx alex .",
     "test": "vitest --coverage",
     "version": "npm run build && npm run release && git add CHANGELOG.md dist/index.js"
   },
@@ -31,6 +31,7 @@
     "eslint": "^8.50.0",
     "msw": "^1.3.1",
     "prettier": "^3.0.3",
+    "typescript": "^5.2.2",
     "vitest": "^0.34.5"
   },
   "prettier": "@readme/eslint-config/prettier"
