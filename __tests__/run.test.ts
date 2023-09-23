@@ -5,7 +5,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import run from '../run';
+import run from '../run.js';
 
 const glitchUrl = 'https://api.glitch.com/project/githubImport';
 
