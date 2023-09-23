@@ -1,12 +1,17 @@
-const core = require('@actions/core');
+import * as core from '@actions/core';
 
-async function run() {
+export default async function run() {
   try {
     const projectId = core.getInput('project-id', { required: true });
     const authorization = core.getInput('auth-token', { required: true });
     const path = core.getInput('path');
     // https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
     const repo = core.getInput('repo') || process.env.GITHUB_REPOSITORY;
+    if (!repo) {
+      throw new Error(
+        'Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action?',
+      );
+    }
     const query = new URLSearchParams({ projectId, repo });
     if (path) query.set('path', path);
     const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
@@ -30,5 +35,3 @@ async function run() {
     return core.setFailed(`Error running workflow: ${error.message}`);
   }
 }
-
-module.exports = run;
