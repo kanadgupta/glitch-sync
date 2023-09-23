@@ -1,5 +1,4 @@
 const core = require('@actions/core');
-const bent = require('bent');
 
 async function run() {
   try {
@@ -13,22 +12,22 @@ async function run() {
     const url = `https://api.glitch.com/project/githubImport?${query.toString()}`;
     core.debug(`full URL: ${url}`);
     core.info('Syncing repo to Glitch 📡');
-    const post = bent(url, 'POST', { authorization });
-    await post();
-    return core.info('Glitch project successfully updated! 🎉');
-  } catch (error) {
-    let failureMessage = error.message;
-    core.debug(`Raw error: ${error}`);
-    if (error.responseBody) {
-      // If error hitting Glitch API, send raw error response body to debug logs
-      // Docs: https://github.com/actions/toolkit/blob/main/docs/action-debugging.md#step-debug-logs
-      const details = (await error.responseBody).toString();
-      core.debug(`Raw error response from Glitch: ${details}`);
-      try {
-        failureMessage = JSON.parse(details).stderr;
-      } catch (e) {} // eslint-disable-line no-empty
-    }
+    const res = await fetch(url, { method: 'POST', headers: { authorization } });
+    if (res.ok) return core.info('Glitch project successfully updated! 🎉');
+
+    // handle error response from Glitch API
+    let failureMessage = res.statusText;
+    const text = await res.text();
+    core.debug(`Raw ${res.status} error response from Glitch: ${text}`);
+    try {
+      // Occasionally Glitch will respond with JSON that contains a semi-helpful error
+      failureMessage = JSON.parse(text).stderr;
+    } catch (e) {} // eslint-disable-line no-empty
+
     return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
+  } catch (error) {
+    core.debug(`Raw error: ${error}`);
+    return core.setFailed(`Error running workflow: ${error.message}`);
   }
 }
 

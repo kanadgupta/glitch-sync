@@ -72,7 +72,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error syncing to Glitch: Input required and not supplied: project-id');
+    expect(output).toContain('::error::Error running workflow: Input required and not supplied: project-id');
   });
 
   it('should fail if missing auth param', async () => {
@@ -81,7 +81,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error syncing to Glitch: Input required and not supplied: auth-token');
+    expect(output).toContain('::error::Error running workflow: Input required and not supplied: auth-token');
   });
 
   it('should fail if Glitch API fails with empty response body', async () => {
@@ -116,7 +116,7 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
 
-    expect(output).toContain('::debug::Raw error response from Glitch: <html></html>');
+    expect(output).toContain('::debug::Raw 403 error response from Glitch: <html></html>');
     expect(output).toContain('::error::Error syncing to Glitch: Forbidden');
   });
 
@@ -135,7 +135,7 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
 
-    expect(output).toContain('::debug::Raw error response from Glitch: <html></html>');
+    expect(output).toContain('::debug::Raw 403 error response from Glitch: <html></html>');
     expect(output).toContain('::error::Error syncing to Glitch: custom status text');
   });
 
