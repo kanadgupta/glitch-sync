@@ -99,7 +99,7 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
     expect(output).toMatch(
-      /\n::error::Error running workflow: Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action\?\n/,
+      /\n::error::Error running workflow: Unable to detect `GITHUB_REPOSITORY` environment variable. Are you running this in a GitHub Action\?\n/,
     );
   });
 
@@ -188,6 +188,30 @@ describe('glitch-sync main runner tests', () => {
     expect(output).toMatch(
       /\n::error::Error syncing to Glitch: mv: cannot stat '\/tmp\/tmp.pDQPiXJ6CU\/non-existent-path\/\*': No such file or directory%0A\n/,
     );
+  });
+
+  it('should fail and handle unexpected JSON response bodies', async () => {
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PATH', 'non-existent-path');
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
+
+    server.use(
+      rest.post(glitchUrl, (req, res, ctx) => {
+        validateReq(req, { path: 'non-existent-path' });
+        return res(
+          ctx.status(400),
+          ctx.json({
+            something: 'weird',
+          }),
+        );
+      }),
+    );
+
+    await expect(run()).resolves.toBeUndefined();
+
+    const output = getCommandOutput();
+    expect(output).toMatch(/\n::debug::Raw 400 error response from Glitch: {"something":"weird"}\n/);
+    expect(output).toMatch(/\n::error::Error syncing to Glitch: Bad Request\n/);
   });
 
   it('should run with required parameters', async () => {

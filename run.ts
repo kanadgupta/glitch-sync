@@ -9,7 +9,7 @@ export default async function run() {
     const repo = core.getInput('repo') || process.env.GITHUB_REPOSITORY;
     if (!repo) {
       throw new Error(
-        'Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action?',
+        'Unable to detect `GITHUB_REPOSITORY` environment variable. Are you running this in a GitHub Action?',
       );
     }
     const query = new URLSearchParams({ projectId, repo });
@@ -26,7 +26,8 @@ export default async function run() {
     core.debug(`Raw ${res.status} error response from Glitch: ${text}`);
     try {
       // Occasionally Glitch will respond with JSON that contains a semi-helpful error
-      failureMessage = JSON.parse(text).stderr;
+      const { stderr } = JSON.parse(text);
+      if (stderr) failureMessage = stderr;
     } catch (e) {} // eslint-disable-line no-empty
 
     return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
