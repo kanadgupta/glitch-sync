@@ -1,4 +1,4 @@
-import * as core from '@actions/core';
+import * as core from './core.js';
 
 export default async function run() {
   try {
