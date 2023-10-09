@@ -99,7 +99,7 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
     expect(output).toMatch(
-      /\n::error::Error running workflow: Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action\?\n/,
+      /\n::error::Error running workflow: Unable to detect `GITHUB_REPOSITORY` environment variable. Are you running this in a GitHub Action\?\n/,
     );
   });
 

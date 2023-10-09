@@ -9,7 +9,7 @@ export default async function run() {
     const repo = core.getInput('repo') || process.env.GITHUB_REPOSITORY;
     if (!repo) {
       throw new Error(
-        'Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action?',
+        'Unable to detect `GITHUB_REPOSITORY` environment variable. Are you running this in a GitHub Action?',
       );
     }
     const query = new URLSearchParams({ projectId, repo });
