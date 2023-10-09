@@ -1,6 +1,6 @@
 {
   "name": "glitch-sync",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Sync your GitHub repository with Glitch via GitHub Actions 🎏",
   "private": true,
   "main": "dist/index.js",

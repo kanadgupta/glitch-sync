@@ -1,3 +1,14 @@
+## <small>3.0.1 (2023-10-09)</small>
+
+* fix: better error message, handle unexpected JSON responses (#69) ([60dc516](https://github.com/kanadgupta/glitch-sync/commit/60dc516)), closes [#69](https://github.com/kanadgupta/glitch-sync/issues/69)
+* refactor: remove `@actions/core` (#68) ([613b6b1](https://github.com/kanadgupta/glitch-sync/commit/613b6b1)), closes [#68](https://github.com/kanadgupta/glitch-sync/issues/68)
+* chore: npm audit fix ([c82680c](https://github.com/kanadgupta/glitch-sync/commit/c82680c))
+* chore: remove unnecessary prettierignore ([472caaf](https://github.com/kanadgupta/glitch-sync/commit/472caaf))
+* chore(deps): npm up (#67) ([7355e1a](https://github.com/kanadgupta/glitch-sync/commit/7355e1a)), closes [#67](https://github.com/kanadgupta/glitch-sync/issues/67)
+* docs(contributing): update file path ([cfab4fd](https://github.com/kanadgupta/glitch-sync/commit/cfab4fd))
+
+
+
 ## 3.0.0 (2023-09-23)
 
 * feat: convert to ES module (#64) ([5024334](https://github.com/kanadgupta/glitch-sync/commit/5024334)), closes [#64](https://github.com/kanadgupta/glitch-sync/issues/64)
