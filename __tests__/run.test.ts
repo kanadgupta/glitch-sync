@@ -190,6 +190,30 @@ describe('glitch-sync main runner tests', () => {
     );
   });
 
+  it('should fail and handle unexpected JSON response bodies', async () => {
+    vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
+    vi.stubEnv('INPUT_PATH', 'non-existent-path');
+    vi.stubEnv('INPUT_PROJECT-ID', projectId);
+
+    server.use(
+      rest.post(glitchUrl, (req, res, ctx) => {
+        validateReq(req, { path: 'non-existent-path' });
+        return res(
+          ctx.status(400),
+          ctx.json({
+            something: 'weird',
+          }),
+        );
+      }),
+    );
+
+    await expect(run()).resolves.toBeUndefined();
+
+    const output = getCommandOutput();
+    expect(output).toMatch(/\n::debug::Raw 400 error response from Glitch: {"something":"weird"}\n/);
+    expect(output).toMatch(/\n::error::Error syncing to Glitch: Bad Request\n/);
+  });
+
   it('should run with required parameters', async () => {
     vi.stubEnv('INPUT_AUTH-TOKEN', authorization);
     vi.stubEnv('INPUT_PROJECT-ID', projectId);

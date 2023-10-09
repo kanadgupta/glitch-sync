@@ -26,7 +26,8 @@ export default async function run() {
     core.debug(`Raw ${res.status} error response from Glitch: ${text}`);
     try {
       // Occasionally Glitch will respond with JSON that contains a semi-helpful error
-      failureMessage = JSON.parse(text).stderr;
+      const { stderr } = JSON.parse(text);
+      if (stderr) failureMessage = stderr;
     } catch (e) {} // eslint-disable-line no-empty
 
     return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
