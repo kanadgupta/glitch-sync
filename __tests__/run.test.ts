@@ -78,7 +78,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error running workflow: Input required and not supplied: project-id');
+    expect(output).toMatch(/\n::error::Error running workflow: Input required and not supplied: project-id\n/);
   });
 
   it('should fail if missing auth param', async () => {
@@ -87,7 +87,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error running workflow: Input required and not supplied: auth-token');
+    expect(output).toMatch(/\n::error::Error running workflow: Input required and not supplied: auth-token\n/);
   });
 
   it('should fail if github env variables are missing', async () => {
@@ -98,8 +98,8 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain(
-      '::error::Error running workflow: Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action?',
+    expect(output).toMatch(
+      /\n::error::Error running workflow: Unable to detect critical GitHub Actions environment variables. Are you running this in a GitHub Action\?\n/,
     );
   });
 
@@ -117,7 +117,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('::error::Error syncing to Glitch: Forbidden');
+    expect(output).toMatch(/\n::error::Error syncing to Glitch: Forbidden\n/);
   });
 
   it('should fail and display status text if Glitch API responds with non-JSON response', async () => {
@@ -135,8 +135,8 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
 
-    expect(output).toContain('::debug::Raw 403 error response from Glitch: <html></html>');
-    expect(output).toContain('::error::Error syncing to Glitch: Forbidden');
+    expect(output).toMatch(/\n::debug::Raw 403 error response from Glitch: <html><\/html>\n/);
+    expect(output).toMatch(/\n::error::Error syncing to Glitch: Forbidden\n/);
   });
 
   it('should fail and display status text if Glitch API responds with non-JSON response and custom status text', async () => {
@@ -154,8 +154,8 @@ describe('glitch-sync main runner tests', () => {
 
     const output = getCommandOutput();
 
-    expect(output).toContain('::debug::Raw 403 error response from Glitch: <html></html>');
-    expect(output).toContain('::error::Error syncing to Glitch: custom status text');
+    expect(output).toMatch(/\n::debug::Raw 403 error response from Glitch: <html><\/html>\n/);
+    expect(output).toMatch(/\n::error::Error syncing to Glitch: custom status text\n/);
   });
 
   it('should fail if Glitch API fails with JSON response body', async () => {
@@ -185,8 +185,8 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain(
-      "::error::Error syncing to Glitch: mv: cannot stat '/tmp/tmp.pDQPiXJ6CU/non-existent-path/*': No such file or directory",
+    expect(output).toMatch(
+      /\n::error::Error syncing to Glitch: mv: cannot stat '\/tmp\/tmp.pDQPiXJ6CU\/non-existent-path\/\*': No such file or directory%0A\n/,
     );
   });
 
@@ -197,7 +197,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('Glitch project successfully updated! 🎉');
+    expect(output).toMatch(/\nGlitch project successfully updated! 🎉\n/);
   });
 
   it('should run with optional path param', async () => {
@@ -215,7 +215,7 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('Glitch project successfully updated! 🎉');
+    expect(output).toMatch(/\nGlitch project successfully updated! 🎉\n/);
   });
 
   it('should run with optional repo param', async () => {
@@ -234,6 +234,6 @@ describe('glitch-sync main runner tests', () => {
     await expect(run()).resolves.toBeUndefined();
 
     const output = getCommandOutput();
-    expect(output).toContain('Glitch project successfully updated! 🎉');
+    expect(output).toMatch(/\nGlitch project successfully updated! 🎉\n/);
   });
 });
