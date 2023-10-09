@@ -44,7 +44,7 @@ function issueCommand(command: 'debug' | 'error', message: unknown): void {
  * Writes debug message to user log
  * @param message debug message
  */
-export function debug(message: unknown) {
+export function debug(message: string): void {
   issueCommand('debug', message);
 }
 
@@ -54,7 +54,7 @@ export function debug(message: unknown) {
  *
  * @param name name of the input to get
  */
-export function getInput(name: string, options: { required?: boolean } = {}) {
+export function getInput(name: string, options: { required?: boolean } = {}): string {
   const val: string = process.env[`INPUT_${name.replace(/ /g, '_').toUpperCase()}`] || '';
   if (options.required && !val) {
     throw new Error(`Input required and not supplied: ${name}`);
