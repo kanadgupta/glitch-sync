@@ -1,7 +1,7 @@
-import type { DefaultBodyType, PathParams, RestRequest } from 'msw';
+import type { DefaultBodyType, StrictRequest } from 'msw';
 import type { SpyInstance } from 'vitest';
 
-import { rest } from 'msw';
+import { http } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -16,33 +16,31 @@ const repo = 'owner/repo';
 const path = 'test-path';
 
 /** Validates the query and header params of the Glitch API request */
-function validateReq(
-  req: RestRequest<DefaultBodyType, PathParams<string>>,
-  opts: { path?: string; repo?: string } = {},
-) {
+function validateReq(req: StrictRequest<DefaultBodyType>, opts: { path?: string; repo?: string } = {}) {
   if (req.headers.get('authorization') !== authorization) {
     throw new Error(`Mock error: expected ${authorization}, received ${req.headers.get('authorization')}`);
   }
-  if (req.url.searchParams.get('projectId') !== projectId) {
-    throw new Error(`Mock error: expected ${projectId}, received ${req.url.searchParams.get('projectId')}`);
+  const { searchParams } = new URL(req.url);
+  if (searchParams.get('projectId') !== projectId) {
+    throw new Error(`Mock error: expected ${projectId}, received ${searchParams.get('projectId')}`);
   }
 
   const currentPath = opts.path || null;
-  if (req.url.searchParams.get('path') !== currentPath) {
-    throw new Error(`Mock error: expected ${currentPath}, received ${req.url.searchParams.get('path')}`);
+  if (searchParams.get('path') !== currentPath) {
+    throw new Error(`Mock error: expected ${currentPath}, received ${searchParams.get('path')}`);
   }
 
   const currentRepo = opts.repo || repo;
-  if (req.url.searchParams.get('repo') !== currentRepo) {
-    throw new Error(`Mock error: expected ${currentRepo}, received ${req.url.searchParams.get('repo')}`);
+  if (searchParams.get('repo') !== currentRepo) {
+    throw new Error(`Mock error: expected ${currentRepo}, received ${searchParams.get('repo')}`);
   }
 }
 
 const server = setupServer(
   // Describe the requests to mock.
-  rest.post(glitchUrl, (req, res, ctx) => {
-    validateReq(req);
-    return res(ctx.status(200));
+  http.post(glitchUrl, ({ request }) => {
+    validateReq(request);
+    return new Response(null, { status: 200 });
   }),
 );
 
@@ -108,9 +106,9 @@ describe('glitch-sync main runner tests', () => {
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
-      rest.post(glitchUrl, (req, res, ctx) => {
-        validateReq(req);
-        return res(ctx.status(403));
+      http.post(glitchUrl, ({ request }) => {
+        validateReq(request);
+        return new Response(null, { status: 403, statusText: 'Forbidden' });
       }),
     );
 
@@ -125,9 +123,9 @@ describe('glitch-sync main runner tests', () => {
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
-      rest.post(glitchUrl, (req, res, ctx) => {
-        validateReq(req);
-        return res(ctx.status(403), ctx.text('<html></html>'));
+      http.post(glitchUrl, ({ request }) => {
+        validateReq(request);
+        return new Response('<html></html>', { status: 403, statusText: 'Forbidden' });
       }),
     );
 
@@ -144,9 +142,9 @@ describe('glitch-sync main runner tests', () => {
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
-      rest.post(glitchUrl, (req, res, ctx) => {
-        validateReq(req);
-        return res(ctx.status(403, 'custom status text'), ctx.text('<html></html>'));
+      http.post(glitchUrl, ({ request }) => {
+        validateReq(request);
+        return new Response('<html></html>', { status: 403, statusText: 'custom status text' });
       }),
     );
 
@@ -164,12 +162,11 @@ describe('glitch-sync main runner tests', () => {
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
-      rest.post(glitchUrl, (req, res, ctx) => {
-        validateReq(req, { path: 'non-existent-path' });
-        return res(
-          ctx.status(400),
-          // Note: this is an example response for when a bad `path` query parameter is sent
-          ctx.json({
+      http.post(glitchUrl, ({ request }) => {
+        validateReq(request, { path: 'non-existent-path' });
+        // Note: this is an example response for when a bad `path` query parameter is sent
+        return new Response(
+          JSON.stringify({
             cmd: "/opt/watcher/scripts/github-import.sh --repository='kanadgupta/glitch-sync' --sub-directory='non-existent-path' --token='redacted'",
             code: 1,
             killed: false,
@@ -178,6 +175,12 @@ describe('glitch-sync main runner tests', () => {
             stdout: 'Will checkout kanadgupta/glitch-sync at /tmp/tmp.pDQPiXJ6CU\n/app\n',
             task: 'Import from GitHub',
           }),
+          {
+            status: 400,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
         );
       }),
     );
@@ -196,13 +199,13 @@ describe('glitch-sync main runner tests', () => {
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
-      rest.post(glitchUrl, (req, res, ctx) => {
-        validateReq(req, { path: 'non-existent-path' });
-        return res(
-          ctx.status(400),
-          ctx.json({
+      http.post(glitchUrl, ({ request }) => {
+        validateReq(request, { path: 'non-existent-path' });
+        return new Response(
+          JSON.stringify({
             something: 'weird',
           }),
+          { status: 400, statusText: 'Bad Request' },
         );
       }),
     );
@@ -230,9 +233,9 @@ describe('glitch-sync main runner tests', () => {
     vi.stubEnv('INPUT_PROJECT-ID', projectId);
 
     server.use(
-      rest.post(glitchUrl, (req, res, ctx) => {
-        validateReq(req, { path });
-        return res(ctx.status(200));
+      http.post(glitchUrl, ({ request }) => {
+        validateReq(request, { path });
+        return new Response(null, { status: 200 });
       }),
     );
 
@@ -249,9 +252,9 @@ describe('glitch-sync main runner tests', () => {
     vi.stubEnv('INPUT_REPO', 'octocat/Hello-World');
 
     server.use(
-      rest.post(glitchUrl, (req, res, ctx) => {
-        validateReq(req, { path, repo: 'octocat/Hello-World' });
-        return res(ctx.status(200));
+      http.post(glitchUrl, ({ request }) => {
+        validateReq(request, { path, repo: 'octocat/Hello-World' });
+        return new Response(null, { status: 200 });
       }),
     );
 
