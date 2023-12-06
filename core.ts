@@ -8,6 +8,9 @@ import os from 'node:os';
  * @see {@link https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions}
  */
 
+// ignoring this file since it's mainly all `@actions/core`
+/* v8 ignore start */
+
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string

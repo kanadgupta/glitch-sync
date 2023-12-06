@@ -12,7 +12,7 @@
     "build": "ncc build index.ts",
     "release": "npx conventional-changelog-cli -i CHANGELOG.md -s",
     "pretest": "tsc && eslint . --ext ts,js && prettier -c . && npx alex .",
-    "test": "vitest --coverage",
+    "test": "vitest run --coverage",
     "version": "npm run build && npm run release && git add CHANGELOG.md dist/index.js"
   },
   "repository": {
@@ -24,13 +24,14 @@
   "license": "ISC",
   "devDependencies": {
     "@readme/eslint-config": "^13.4.0",
+    "@types/node": "^20.10.3",
     "@vercel/ncc": "^0.38.0",
-    "@vitest/coverage-v8": "^0.34.5",
+    "@vitest/coverage-v8": "^1.0.1",
     "eslint": "^8.50.0",
     "msw": "^2.0.2",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.5"
+    "vitest": "^1.0.1"
   },
   "prettier": "@readme/eslint-config/prettier"
 }
