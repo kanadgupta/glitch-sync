@@ -23,7 +23,7 @@
   "author": "Kanad Gupta",
   "license": "ISC",
   "devDependencies": {
-    "@readme/eslint-config": "^13.4.0",
+    "@readme/eslint-config": "^14.0.0",
     "@types/node": "^20.11.15",
     "@vercel/ncc": "^0.38.0",
     "@vitest/coverage-v8": "^1.2.2",

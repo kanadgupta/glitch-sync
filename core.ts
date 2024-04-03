@@ -78,7 +78,7 @@ export function info(message: string): void {
  * When the action exits it will be with an exit code of 1
  * @param message add error issue message
  */
-export function setFailed(message: string | Error): void {
+export function setFailed(message: Error | string): void {
   process.exitCode = 1;
 
   issueCommand('error', message instanceof Error ? message.toString() : message);

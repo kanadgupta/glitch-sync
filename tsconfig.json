@@ -3,6 +3,6 @@
     "module": "NodeNext",
     "noEmit": true,
     "strict": true,
-    "useUnknownInCatchVariables": false,
-  },
+    "useUnknownInCatchVariables": false
+  }
 }
