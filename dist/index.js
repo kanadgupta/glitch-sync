@@ -51,6 +51,8 @@ var external_node_os_default = /*#__PURE__*/__nccwpck_require__.n(external_node_
  * @see {@link https://github.com/actions/toolkit/tree/main/packages/core}
  * @see {@link https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions}
  */
+// ignoring this file since it's mainly all `@actions/core`
+/* v8 ignore start */
 /**
  * Sanitizes an input into a string so it can be passed into issueCommand safely
  * @param input input to sanitize into a string
@@ -159,6 +161,7 @@ async function run() {
 }
 
 ;// CONCATENATED MODULE: ./index.ts
+/* v8 ignore start */
 
 run();
 
