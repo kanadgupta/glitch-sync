@@ -24,13 +24,13 @@
   "license": "ISC",
   "devDependencies": {
     "@readme/eslint-config": "^14.0.0",
-    "@types/node": "^20.11.15",
+    "@types/node": "^20.14.9",
     "@vercel/ncc": "^0.38.0",
     "@vitest/coverage-v8": "^1.2.2",
     "eslint": "^8.50.0",
     "msw": "^2.1.5",
     "prettier": "^3.2.4",
-    "typescript": "^5.2.2",
+    "typescript": "^5.5.2",
     "vitest": "^1.2.2"
   },
   "prettier": "@readme/eslint-config/prettier"
