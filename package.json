@@ -23,14 +23,14 @@
   "author": "Kanad Gupta",
   "license": "ISC",
   "devDependencies": {
-    "@readme/eslint-config": "^14.0.0",
+    "@readme/eslint-config": "^14.0.3",
     "@types/node": "^20.11.15",
     "@vercel/ncc": "^0.38.0",
     "@vitest/coverage-v8": "^1.2.2",
     "eslint": "^8.50.0",
-    "msw": "^2.1.5",
-    "prettier": "^3.2.4",
-    "typescript": "^5.2.2",
+    "msw": "^2.3.4",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4",
     "vitest": "^1.2.2"
   },
   "prettier": "@readme/eslint-config/prettier"
