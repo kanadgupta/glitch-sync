@@ -1,5 +1,5 @@
 import type { DefaultBodyType, StrictRequest } from 'msw';
-import type { SpyInstance } from 'vitest';
+import type { MockInstance } from 'vitest';
 
 import { http } from 'msw';
 import { setupServer } from 'msw/node';
@@ -45,7 +45,7 @@ const server = setupServer(
 );
 
 describe('glitch-sync main runner tests', () => {
-  let mockStdOut: SpyInstance;
+  let mockStdOut: MockInstance;
 
   const getCommandOutput = () => {
     return [mockStdOut.mock.calls.join('\n\n')].filter(Boolean).join('\n\n');
