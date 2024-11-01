@@ -28,7 +28,10 @@ export default async function run() {
       // Occasionally Glitch will respond with JSON that contains a semi-helpful error
       const { stderr } = JSON.parse(text);
       if (stderr) failureMessage = stderr;
-    } catch (e) {} // eslint-disable-line no-empty
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (e) {
+      /* ignore any parsing errors */
+    }
 
     return core.setFailed(`Error syncing to Glitch: ${failureMessage}`);
   } catch (error) {
