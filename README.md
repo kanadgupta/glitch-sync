@@ -2,6 +2,13 @@
 
 [![Remix on Glitch](https://cdn.glitch.com/2703baf2-b643-4da7-ab91-7ee2a2d00b5b%2Fremix-button.svg)](https://glitch.com/edit/#!/import/github/kanadgupta/glitch-sync)
 
+> [!NOTE]
+> On July 8th, 2025, [Glitch ended project hosting](https://blog.glitch.com/post/changes-are-coming-to-glitch/), which means this project is now sunset. Glitch was run by a great group of people — the product and team inspired a lot of little projects that I'm very proud of (including this one).
+>
+> Much gratitude to the Glitch team for all the great work they did (including, but not limited to, not taking down the endpoint that this tool relied on).
+>
+> Au revoir, Glitch!
+
 This action uses the [Glitch](https://glitch.com/) API to [export your GitHub repository to your Glitch project](https://glitch.happyfox.com/kb/article/20-importing-code-from-github/).
 
 ## Requirements
